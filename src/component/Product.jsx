@@ -82,6 +82,7 @@ const ShowProduct = ()=> {
             <NavLink to="/cart" className="btn btn-dark ms-2 px-3 py-2">
               Go to Cart
             </NavLink>
+            
          </div>
         </>
     )

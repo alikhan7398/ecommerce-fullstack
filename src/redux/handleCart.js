@@ -8,7 +8,6 @@ const handleCart = createSlice({
       const product = action.payload;
       const exist = state.find((x) => x.id === product.id);
       if (exist) {
-        // Increase quantity
         return state.map((x) =>
           x.id === product.id ? { ...x, qty: x.qty + 1 } : x
         );
@@ -30,8 +29,11 @@ const handleCart = createSlice({
     removeCart(state, action) {
       return state.filter((x) => x.id !== action.payload.id);
     },
+    clearCart(state) {
+      return [];
+    },
   },
 });
 
-export const { addCart, delCart, removeCart } = handleCart.actions;
+export const { addCart, delCart, removeCart, clearCart } = handleCart.actions;
 export default handleCart.reducer;
