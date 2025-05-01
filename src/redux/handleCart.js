@@ -1,35 +1,54 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+// Load cart from localStorage
+const loadCartState = () => {
+  try {
+    const serializedState = localStorage.getItem('cart');
+    return serializedState ? JSON.parse(serializedState) : [];
+  } catch (e) {
+    return [];
+  }
+};
+
 const handleCart = createSlice({
   name: "cart",
-  initialState: [],
+  initialState: loadCartState(),
   reducers: {
     addCart(state, action) {
       const product = action.payload;
       const exist = state.find((x) => x.id === product.id);
+      let newState;
       if (exist) {
-        return state.map((x) =>
+        newState = state.map((x) =>
           x.id === product.id ? { ...x, qty: x.qty + 1 } : x
         );
       } else {
-        return [...state, { ...product, qty: 1 }];
+        newState = [...state, { ...product, qty: 1 }];
       }
+      localStorage.setItem('cart', JSON.stringify(newState));
+      return newState;
     },
     delCart(state, action) {
       const product = action.payload;
       const exist = state.find((x) => x.id === product.id);
+      let newState;
       if (exist.qty === 1) {
-        return state.filter((x) => x.id !== product.id);
+        newState = state.filter((x) => x.id !== product.id);
       } else {
-        return state.map((x) =>
+        newState = state.map((x) =>
           x.id === product.id ? { ...x, qty: x.qty - 1 } : x
         );
       }
+      localStorage.setItem('cart', JSON.stringify(newState));
+      return newState;
     },
     removeCart(state, action) {
-      return state.filter((x) => x.id !== action.payload.id);
+      const newState = state.filter((x) => x.id !== action.payload.id);
+      localStorage.setItem('cart', JSON.stringify(newState));
+      return newState;
     },
     clearCart(state) {
+      localStorage.setItem('cart', JSON.stringify([]));
       return [];
     },
   },

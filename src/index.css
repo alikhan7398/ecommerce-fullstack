@@ -1,13 +1,79 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+html body.light {
+  background-color: #ffffff !important;
+  color: #000000 !important;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+html body.dark {
+  background-color: #212529 !important;
+  color: #ffffff !important;
+}
+
+html body.dark .navbar {
+  background-color: #000407 !important;
+}
+
+html body.dark .navbar-brand,
+html body.dark .nav-link,
+html body.dark .btn-outline-dark {
+  color: #ffffff !important;
+  border-color: #ffffff !important;
+}
+
+html body.dark .navbar-brand i.fa-user-circle, /* Ensure profile icon is visible */
+html body.dark .buttons span i.fa-user-circle, /* Profile icon in buttons section */
+html body.dark .buttons span {
+  color: #ffffff !important;
+}
+
+html body.dark .navbar-toggler {
+  border-color: #ffffff !important;
+}
+
+html body.dark .navbar-toggler-icon {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(255, 255, 255, 1)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
+}
+
+html body.dark .card,
+html body.dark .accordion-item,
+html body.dark .list-group-item {
+  background-color: #343a40 !important;
+  color: #ffffff !important;
+}
+
+html body.dark .form-control,
+html body.dark .form-control:focus {
+  background-color: #495057 !important;
+  color: #ffffff !important;
+  border-color: #6c757d !important;
+}
+
+html body.dark .btn-dark {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+  border-color: #ffffff !important;
+}
+
+html body.dark .btn-outline-dark:hover {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+}
+
+html body.dark .text-black-50,
+html body.dark .text-secondary {
+  color: #adb5bd !important;
+}
+
+html body.dark .text-primary {
+  color: #0dcaf0 !important;
+}
+
+html body.dark .card-img-overlay {
+  background-color: rgba(0, 0, 0, 0.7) !important;
+}
+
+html body.dark footer {
+  background-color: #000407 !important;
+  color: #ffffff !important;
+  padding: 1rem 0;
+  border-top: 1px solid #495057 !important;
 }

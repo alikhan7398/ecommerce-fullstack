@@ -30,6 +30,8 @@ export default function Payment() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const token = localStorage.getItem('token');
+    console.log('Payment.jsx: Token from localStorage:', token); // Debug token value
+    console.log('Payment.jsx: Full Authorization header:', `Bearer ${token}`); // Debug header
     if (!token) {
       setMessage('Please log in first');
       return;
@@ -43,7 +45,7 @@ export default function Payment() {
       return;
     }
     try {
-      const response = await fetch('http://localhost:5000/checkout', {
+      const response = await fetch('api/checkout', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -52,6 +54,7 @@ export default function Payment() {
         body: JSON.stringify({ cartItems, total, paymentDetails: formData }),
       });
       const data = await response.json();
+      console.log('Payment.jsx: Server response:', data); // Debug response
       if (response.status === 200) {
         setMessage('Payment successful');
         dispatch(clearCart());

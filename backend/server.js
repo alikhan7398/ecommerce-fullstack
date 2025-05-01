@@ -1,96 +1,78 @@
-console.log('Starting server.js...');
 const express = require('express');
 const cors = require('cors');
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcryptjs');
-
 const app = express();
-const port = 5000;
-const secretKey = 'your-secret-key';
 
-app.use(cors({ origin: 'http://localhost:3000' }));
 app.use(express.json());
+app.use(cors({ origin: '*' })); // Allow all origins for testing
 
-let users = [];
-let orders = [];
+// Log all incoming requests
+app.use((req, res, next) => {
+  console.log(`Received ${req.method} request to ${req.url} at ${new Date().toISOString()}`);
+  next();
+});
 
-app.post('/register', async (req, res) => {
-  try {
-    const { username, email, password } = req.body;
-    console.log('Register attempt:', { username, email });
-    if (!username || !email || !password) {
-      return res.status(400).json({ message: 'All fields are required' });
-    }
-    if (users.find((user) => user.email === email)) {
-      return res.status(400).json({ message: 'Email already exists' });
-    }
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const user = { username, email, password: hashedPassword };
-    users.push(user);
-    console.log('User registered:', user);
-    console.log('Current users:', users);
-    res.status(201).json({ message: 'User registered successfully' });
-  } catch (error) {
-    console.error('Register error:', error);
-    res.status(500).json({ message: 'Server error' });
+// Test GET route
+app.get('/test', (req, res) => {
+  console.log('Test route hit');
+  res.status(200).json({ message: 'Server is running' });
+});
+
+// Register POST route
+app.post('/api/register', (req, res) => {
+  console.log('Register route hit:', req.body);
+  res.status(201).json({ message: 'User registered successfully' });
+});
+
+// Login POST route
+app.post('/api/login', (req, res) => {
+  console.log('Login route hit:', req.body);
+  const { username } = req.body;
+  res.status(200).json({
+    message: 'Login successful',
+    token: 'dummy-token',
+    user: { username }
+  });
+});
+
+// Checkout POST route
+app.post('/api/checkout', (req, res) => {
+  const token = req.headers.authorization;
+
+  // Dummy token validation
+  if (!token || token !== 'Bearer dummy-token') {
+    console.log('Invalid or missing token:', token);
+    return res.status(401).json({ message: 'Unauthorized: Invalid token' });
+  }
+
+  const orderData = req.body;
+  console.log('Checkout route hit. Order data received:', orderData);
+
+  // Simulate storing the order or processing payment
+  res.status(200).json({ message: 'Checkout successful', order: orderData });
+});
+
+// Catch-all route (must come LAST)
+app.use('*', (req, res) => {
+  console.log('Catch-all route hit:', req.url);
+  res.status(404).json({ message: 'Route not found' });
+});
+
+// Start server
+const PORT = 5000;
+app.listen(PORT, '0.0.0.0', (err) => {
+  if (err) {
+    console.error('Failed to start server:', err);
+  } else {
+    console.log(`Server running on port ${PORT}`);
+    console.log('Listening on all interfaces');
   }
 });
 
-app.post('/login', async (req, res) => {
-  try {
-    const { username, password } = req.body;
-    console.log('Login attempt:', { username });
-    console.log('Current users:', users);
-    const user = users.find((user) => user.username === username || user.email === username);
-    if (!user) {
-      console.log('User not found:', username);
-      return res.status(400).json({ message: 'Invalid username or password' });
-    }
-    const isMatch = await bcrypt.compare(password, user.password);
-    console.log('Password match result:', isMatch);
-    if (!isMatch) {
-      console.log('Password mismatch for:', username);
-      return res.status(400).json({ message: 'Invalid username or password' });
-    }
-    const token = jwt.sign({ username: user.username, email: user.email }, secretKey, { expiresIn: '1h' });
-    console.log('Login successful:', { username, token });
-    res.json({ message: 'Login successful', token, user: { username: user.username, email: user.email } });
-  } catch (error) {
-    console.error('Login error:', error);
-    res.status(500).json({ message: 'Server error' });
-  }
+// Error logging
+process.on('uncaughtException', (err) => {
+  console.error('Uncaught Exception:', err);
 });
 
-app.post('/checkout', (req, res) => {
-  try {
-    const token = req.headers['authorization']?.split(' ')[1];
-    console.log('Checkout attempt, token:', token);
-    if (!token) {
-      console.log('No token provided');
-      return res.status(401).json({ message: 'No token provided' });
-    }
-    const decoded = jwt.verify(token, secretKey);
-    console.log('Token decoded:', decoded);
-    const { cartItems, total } = req.body;
-    if (!cartItems || !total) {
-      console.log('Missing cartItems or total');
-      return res.status(400).json({ message: 'Cart items and total are required' });
-    }
-    const order = {
-      userEmail: decoded.email,
-      cartItems,
-      total,
-      date: new Date(),
-    };
-    orders.push(order);
-    console.log('Order placed:', order);
-    res.json({ message: 'Order placed successfully', order });
-  } catch (error) {
-    console.error('Checkout error:', error);
-    res.status(401).json({ message: 'Invalid token or server error' });
-  }
-});
-
-app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('Unhandled Rejection at:', promise, 'reason:', reason);
 });

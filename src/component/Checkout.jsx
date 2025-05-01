@@ -55,7 +55,7 @@ export default function Checkout() {
       <div className="container py-4">
         <h3 className="text-center mb-4">Checkout</h3>
         <p className="text-center">Testing checkout page rendering.</p>
-        <button className="btn btn-dark w-100" onClick={handleCheckout}>
+        <button type="button" className="btn btn-dark w-100" onClick={handleCheckout}>
           Proceed to Payment
         </button>
         {message && <p className="text-danger text-center mt-3">{message}</p>}

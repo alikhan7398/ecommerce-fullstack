@@ -29,3 +29,13 @@ yarn-error.log*
 /backend/*.log
 # Backend environment variables
 /backend/.env
+.vercel
+
+
+
+
+
+
+
+
+mongodb+srv://Alikhan:<Alikhan@300>@cluster0.cuopeyz.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0

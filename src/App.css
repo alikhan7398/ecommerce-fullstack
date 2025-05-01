@@ -1,22 +1,29 @@
-/* Ensure the body takes full height */
-body, html {
-    height: 100%;
-    margin: 0;
-  }
-  
-  .app-container {
-    min-height: 100vh; /* Minimum height of the page */
-    display: flex;
-    flex-direction: column;
-  }
-  
-  /* Main content should take up all available space */
-  .main-content {
-    flex: 1;
-  }
-  
-  /* Footer Styling */
-  footer {
-    margin-top: auto; /* Push footer to the bottom */
-  }
-  
+/* App.css */
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Ensure full viewport height */
+}
+
+.main-content {
+  flex: 1 0 auto; /* Allow content to grow but not shrink */
+  padding-bottom: 60px; /* Space for footer height, adjust as needed */
+}
+
+footer {
+  flex-shrink: 0; /* Prevent footer from shrinking */
+  width: 100%;
+  background-color: #1a1a1a;
+  color: #00b4d8;
+  text-align: center;
+  padding: 10px 0;
+  /* Uncomment the next line if you want it strictly fixed */
+  /* position: fixed;
+  bottom: 0;
+  left: 0; */
+}
