@@ -36,8 +36,11 @@ function Login() {
           pauseOnHover: false,
           draggable: true,
           theme: 'colored',
-        }); // Match your addProduct style
+        });
         dispatch(login({ username: data.username || trimmedUsername, token: data.token }));
+        // Fallback: Manually save token
+        localStorage.setItem('token', data.token);
+        console.log('Manually stored token:', localStorage.getItem('token'));
         navigate('/');
       } else {
         setMessage(data.message || 'Invalid username or password');
